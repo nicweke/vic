@@ -44,11 +44,12 @@ const Page = () => {
 
   const { mutate: signIn, isLoading } = trpc.auth.signIn.useMutation({
     onSuccess: () => {
-      toast.success("You have signed-in successfully");
+      toast.success("You have logged in successfully");
+      //router.refresh();
 
-      router.refresh();
       if (origin) {
         router.push(`/${origin}`);
+
         return;
       }
       if (isSeller) {
@@ -56,6 +57,7 @@ const Page = () => {
         return;
       }
       router.push("/");
+      router.refresh();
     },
     onError: (err) => {
       if (err.data?.code === "UNAUTHORIZED") {
@@ -75,8 +77,8 @@ const Page = () => {
           <div className="flex flex-col items-center space-y-2 text-center">
             <Icons.logo className="h-20 w-20" />
             <h1 className="text-2xl font-semibold tracking-tight capitalize">
-              Sign In to {isSeller ? "Seller" : ""}
-              {""} account
+              Picasso {isSeller ? "Seller" : ""}
+              {""} Sign In
             </h1>
           </div>
 
@@ -116,7 +118,13 @@ const Page = () => {
                   )}
                 </div>
 
-                <Button className="gap-5">Sign In</Button>
+                <Button
+                  className={buttonVariants({
+                    className: "gap-5",
+                  })}
+                >
+                  Sign In
+                </Button>
 
                 <Link
                   className={buttonVariants({
